@@ -1,6 +1,7 @@
 import asyncio
 import threading
 
+from ext.tornado.stack_context import TracerStackContext
 from proposal.active_span_source import BaseActiveSpanSource
 
 
@@ -49,3 +50,21 @@ class AsyncioActiveSpanSource(BaseActiveSpanSource):
         # get the current running Task for this loop and return the ActiveSpan
         task = asyncio.Task.current_task(loop=loop)
         return getattr(task, '__active_span', None)
+
+
+class TornadoActiveSpanSource(BaseActiveSpanSource):
+    """Implementation that makes use of a context-local `StackContext`
+    to persist the current ActiveSpan. This is an example and here we
+    may find better carriers than crafted ones.
+    """
+    def make_active(self, span):
+        # implementation detail
+        data = TracerStackContext.current_data()
+        if data is not None:
+            data['active_span'] = span
+
+    def active_span(self):
+        # implementation detail
+        data = TracerStackContext.current_data()
+        if data is not None:
+            return data.get('active_span')
