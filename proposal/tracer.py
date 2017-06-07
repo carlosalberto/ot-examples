@@ -8,9 +8,9 @@ class Tracer(OTBaseTracer):
     API. This class includes all methods that may be added to the OT Tracer
     class, so that the proposed interface is public accessible.
     """
-    def __init__(self):
+    def __init__(self, *args, **kwargs):
         # create the tracer as defined in OpenTracing `Tracer` class
-        super(Tracer, self).__init__()
+        super(Tracer, self).__init__(*args, **kwargs)
         # this instance may be changed when the vendor specific
         # implementation is initialized
         self._active_span_source = NoopActiveSpanSource()
