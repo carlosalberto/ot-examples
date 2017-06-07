@@ -4,7 +4,7 @@ from ext.active_span_source import (
     ThreadActiveSpanSource,
 )
 
-from examples import asyncio, multi_threaded
+from examples import asyncio, threads
 
 
 # use a specific ActiveSpanSource implementation
@@ -18,7 +18,7 @@ if __name__ == '__main__':
 
     # multi-threaded examples
     tracer._active_span_source = ThreadActiveSpanSource()
-    multi_threaded.main_thread_instrumented_only()
-    multi_threaded.main_thread_instrumented_children_continue()
-    multi_threaded.main_thread_instrumented_children_not_continue()
-    multi_threaded.main_thread_not_instrumented_children()
+    threads.main_thread_instrumented_only()
+    threads.main_thread_instrumented_children_continue()
+    threads.main_thread_instrumented_children_not_continue()
+    threads.main_thread_not_instrumented_children()
