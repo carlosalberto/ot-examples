@@ -19,7 +19,19 @@ class Tracer(OTBaseTracer):
     def active_span_source(self):
         return self._active_span_source
 
-    def start_active(self, operation_name, tags=None, start_time=None):
+    def start_manual_span(self,
+                          operation_name=None,
+                          child_of=None,
+                          references=None,
+                          tags=None,
+                          start_time=None):
+        """This method supersede the original start_span. When developers
+        use that method, a new Span is created without changing the current
+        Span stack.
+        """
+        return self._noop_span
+
+    def start_active_span(self, operation_name, tags=None, start_time=None):
         """This is a simplified implementation to start a new Span
         that is marked as active.
         """
@@ -33,6 +45,9 @@ class Tracer(OTBaseTracer):
             tags=tags,
             start_time=start_time,
         )
+
+        # explicitly set the flag for automatic deactivation
+        span._deactivate_on_finish = True
 
         # set it as active Span
         self.active_span_source.make_active(span)
