@@ -1,10 +1,12 @@
 class LogRecorder():
     """Recorder implementation that logs in the stdout a pretty
-    printed representation of the recorded `Span`.
+    printed representation of the recorded `Span`. This is used
+    in the `DebugTracer` to check the right parenting when
+    playing with examples.
     """
 
     def record_span(self, span):
-        """Return a human readable version of the span"""
+        """Return a human readable version of the Span"""
 
         lines = [
             ('name', span.operation_name),
